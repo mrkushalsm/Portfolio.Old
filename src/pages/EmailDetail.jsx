@@ -1,17 +1,17 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation} from "react-router-dom";
 
 const EmailDetail = () => {
     const location = useLocation();
-    const email = location.state?.email;
+    const email = location.state?.email; // Get email data from state
 
     if (!email) {
-        return <div className="flex justify-center items-center p-6">Email not found.</div>;
+        return <div className="p-6">Email not found.</div>;
     }
 
     return (
-        <div className="min-h-screen flex flex-col items-center bg-base-200 p-6">
-            <div className="card bg-base-100 shadow-xl p-6 flex flex-col w-full max-w-lg">
+        <div className="min-h-screen bg-base-200 p-6">
+            <div className="card bg-base-100 shadow-xl p-6">
                 <h2 className="text-2xl font-bold">{email.subject}</h2>
                 <p className="text-sm text-gray-500">From: {email.sender}</p>
                 <p className="mt-4">{email.body}</p>

@@ -31,23 +31,25 @@ const Navbar = () => {
             </div>
             <div className="flex items-center gap-4 relative">
                 {isEmailDetailPage && (
-                    <button onClick={() => navigate("/inbox")} className="btn btn-circle btn-ghost">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className="lucide lucide-chevrons-left"
-                        >
-                            <path d="m11 17-5-5 5-5" />
-                            <path d="m18 17-5-5 5-5" />
-                        </svg>
-                    </button>
+                    <div className="tooltip tooltip-left" data-tip="Go back to inbox">
+                        <button onClick={() => navigate("/inbox")} className="btn btn-circle btn-ghost">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                className="lucide lucide-chevrons-left"
+                            >
+                                <path d="m11 17-5-5 5-5" />
+                                <path d="m18 17-5-5 5-5" />
+                            </svg>
+                        </button>
+                    </div>
                 )}
 
                 {!isInboxPage && !isEmailDetailPage && (
@@ -57,11 +59,18 @@ const Navbar = () => {
                 )}
 
                 {(isInboxPage || isRootPage) && (
-                    <div className="tooltip tooltip-left" data-tip="Check your messages">
-                        <Link to="/inbox" className="btn btn-primary flex items-center gap-2">
-                            Inbox
-                            <div className="badge badge-secondary">3</div>
-                        </Link>
+                    <div className={!isInboxPage ? "tooltip tooltip-left" : ""} data-tip={!isInboxPage ? "Check your messages" : ""}>
+                        {isInboxPage ? (
+                            <button className="btn btn-primary flex items-center gap-2 rounded-full cursor-not-allowed">
+                                Inbox
+                                <div className="badge badge-soft badge-secondary">+1</div>
+                            </button>
+                        ) : (
+                            <Link to="/inbox" className="btn btn-primary flex items-center gap-2 rounded-full">
+                                Inbox
+                                <div className="badge badge-soft badge-secondary">+1</div>
+                            </Link>
+                        )}
                     </div>
                 )}
             </div>

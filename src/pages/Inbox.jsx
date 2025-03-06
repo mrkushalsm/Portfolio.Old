@@ -22,7 +22,8 @@ const emails = [
         subject: "👋 Networking",
         sender: "Jane Doe",
         preview: "Let’s connect!",
-        body: "Hi! I would love to connect and discuss opportunities." },
+        body: "Hi! I would love to connect and discuss opportunities."
+    },
 ];
 
 const Inbox = () => {
@@ -33,7 +34,7 @@ const Inbox = () => {
             <div className=" flex card bg-base-100 shadow-xl p-4">
                 <ul className=" flex menu w-full text-xl gap-8">
                     {emails.map((email) => (
-                        <li key={email.id}>
+                        <li key={email.id} className={email.id === 1 ? "" : "opacity-25"}>
                             <Link to="/email" state={{ email }}>
                                 <strong className="p-3">{email.subject}</strong>
                                 <span className="text-base text-gray-500"> - {email.sender}</span>
