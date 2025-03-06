@@ -8,21 +8,16 @@ import Portfolio from "./pages/Portfolio";
 const Layout = ({ children }) => {
     const location = useLocation();
 
-    // Determine title based on the current page
     useEffect(() => {
-        if (location.pathname === "/portfolio") {
-            document.title = "Portfolio";
-        } else {
-            document.title = "Email";
-        }
+        document.title = location.pathname === "/portfolio" ? "Portfolio" : "Email";
     }, [location.pathname]);
 
-    const hideNavbar = location.pathname === "/portfolio"; // Hide navbar on Portfolio page
+    const hideNavbar = location.pathname === "/portfolio";
 
     return (
-        <div className="min-h-screen bg-base-200">
+        <div className="min-h-screen flex flex-col bg-base-200">
             {!hideNavbar && <Navbar />}
-            {children}
+            <div className="flex-grow flex flex-col">{children}</div>
         </div>
     );
 };
