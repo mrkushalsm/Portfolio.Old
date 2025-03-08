@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {BrowserRouter as Router, Routes, Route, useLocation, useNavigate} from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Inbox from "./pages/Inbox";
 import EmailDetail from "./pages/EmailDetail";
-import Portfolio from "./pages/Portfolio";
+import BootScreen from "./pages/BootScreen";
+import Desktop from "./pages/Desktop";
 
 const Hero = () => {
     return (
@@ -26,10 +27,10 @@ const Layout = ({ children }) => {
     const [showHero, setShowHero] = useState(true);
 
     useEffect(() => {
-        document.title = location.pathname === "/portfolio" ? "Portfolio" : "Email";
+        document.title = location.pathname === "/desktop" ? "Portfolio" : "Email";
     }, [location.pathname]);
 
-    const hideNavbar = location.pathname === "/portfolio";
+    const hideNavbar = location.pathname === "/desktop";
 
     const handleInboxClick = () => {
         setShowHero(false);
@@ -48,14 +49,22 @@ const Layout = ({ children }) => {
 const App = () => {
     return (
         <Router>
-            <Layout>
-                <Routes>
-                    <Route path="/" element={<></>} />
-                    <Route path="/inbox" element={<Inbox />} />
-                    <Route path="/email" element={<EmailDetail />} />
-                    <Route path="/portfolio" element={<Portfolio />} />
-                </Routes>
-            </Layout>
+            <Routes>
+                <Route path="/boot" element={<BootScreen />} />
+
+                <Route
+                    path="/*"
+                    element={
+                        <Layout>
+                            <Routes>
+                                <Route path="/inbox" element={<Inbox />} />
+                                <Route path="/email" element={<EmailDetail />} />
+                                <Route path="/desktop" element={<Desktop />} />
+                            </Routes>
+                        </Layout>
+                    }
+                />
+            </Routes>
         </Router>
     );
 };
