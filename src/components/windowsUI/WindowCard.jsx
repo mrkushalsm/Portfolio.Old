@@ -6,8 +6,8 @@ const WindowCard = forwardRef(({ title, onClose, children, isActive, onClick }, 
         <Draggable nodeRef={ref} handle=".drag-handle">
             <div
                 ref={ref}
-                className={`flex flex-col bg-white shadow-lg w-64 h-48 border 
-                ${isActive ? "border-blue-500 shadow-2xl opacity-100 w-100 h-84" : "border-gray-500 shadow-md opacity-75"}`}
+                className={`flex flex-col bg-white shadow-lg border-3 rounded-md 
+                ${isActive ? "border-blue-500 shadow-2xl opacity-100 w-[400px] h-[500px]" : "border-gray-500 shadow-md opacity-75 w-[400px] h-[500px]"}`}
             >
                 <div onMouseDown={onClick}>
                     {/* Window Title Bar (Drag Handle) */}
@@ -20,8 +20,10 @@ const WindowCard = forwardRef(({ title, onClose, children, isActive, onClick }, 
                         </button>
                     </div>
 
-                    {/* Window Content */}
-                    <div className="p-4 text-gray-700">{children} </div>
+                    {/* Window Content - Scrollable */}
+                    <div className="p-4 text-gray-700 overflow-y-auto h-[440px]">
+                        {children}
+                    </div>
                 </div>
             </div>
         </Draggable>

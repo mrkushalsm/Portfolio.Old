@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import windowsIcon from "../assets/taskbar/windows-icon.png";
-import volumeMute from "../assets/taskbar/volume-mute.png";
-import wifi from "../assets/taskbar/wifi.png";
-import battery from "../assets/taskbar/battery.png";
+import windowsIcon from "../../assets/taskbar/windows-icon.png";
+import volumeMute from "../../assets/taskbar/volume-mute.png";
+import wifi from "../../assets/taskbar/wifi.png";
+import battery from "../../assets/taskbar/battery.png";
 
 const Taskbar = ({ openWindows, activeWindow, setActiveWindow, desktopIcons }) => {
     const [time, setTime] = useState(new Date());

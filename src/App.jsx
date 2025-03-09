@@ -4,7 +4,8 @@ import Navbar from "./components/Navbar";
 import Inbox from "./pages/Inbox";
 import EmailDetail from "./pages/EmailDetail";
 import BootScreen from "./pages/BootScreen";
-import Desktop from "./pages/Desktop";
+import DesktopEnv from "./pages/windowsUI/Desktop.jsx";
+import Portfolio from "./pages/portfolio/Portfolio.jsx";
 
 const Hero = () => {
     return (
@@ -27,10 +28,10 @@ const Layout = ({ children }) => {
     const [showHero, setShowHero] = useState(true);
 
     useEffect(() => {
-        document.title = location.pathname === "/desktop" ? "Portfolio" : "Email";
+        document.title = location.pathname === "/desktop" || location.pathname === "/portfolio" ? "Portfolio" : "Email";
     }, [location.pathname]);
 
-    const hideNavbar = location.pathname === "/desktop";
+    const hideNavbar = location.pathname === "/desktop" || location.pathname === "/portfolio"; // ✅ Hides Navbar on `/portfolio`
 
     const handleInboxClick = () => {
         setShowHero(false);
@@ -59,7 +60,8 @@ const App = () => {
                             <Routes>
                                 <Route path="/inbox" element={<Inbox />} />
                                 <Route path="/email" element={<EmailDetail />} />
-                                <Route path="/desktop" element={<Desktop />} />
+                                <Route path="/desktop" element={<DesktopEnv />} />
+                                <Route path="/portfolio" element={<Portfolio />} />
                             </Routes>
                         </Layout>
                     }
