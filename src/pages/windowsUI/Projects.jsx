@@ -7,13 +7,13 @@ const Projects = () => {
         {
             name: "Weather App",
             description: "A real-time weather app using OpenWeather API.",
-            image: "src/assets/projectImg/weatherapp.png",
+            image: "/assets/projectImg/weatherapp.png",
             link: "https://weather-app-teal-omega.vercel.app/",
         },
         {
             name: "Portfolio Website",
             description: "A personal portfolio styled like a Windows desktop.",
-            image: "src/assets/projectImg/portfoliowebsite.png",
+            image: "/assets/projectImg/portfoliowebsite.png",
             link: "",
         },
         {

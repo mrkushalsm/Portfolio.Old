@@ -10,7 +10,7 @@ const ProfileCard = () => {
                 group-hover:rotate-x-[25deg] group-hover:-translate-y-2 group-hover:shadow-10xl">
 
                     {/* Background Image */}
-                    <img src="src/assets/profilecardhover.png" alt="Profile" className="w-full h-full object-cover" />
+                    <img src="/assets/profilecardhover.png" alt="Profile" className="w-full h-full object-cover" />
                 </div>
 
                 {/* Name or Title (Appears on Hover) */}
@@ -23,7 +23,7 @@ const ProfileCard = () => {
                 {/* Character Overlay (Optional) */}
                 <div className="absolute bottom-25 w-full opacity-100 transition-opacity duration-500 group-hover:translate-y-[-30px]">
                     <img
-                        src="src/assets/profile.jpeg"
+                        src="/assets/profile.jpeg"
                         alt="Profile"
                         className="w-53 h-70 rounded-full mx-auto border-4 border-zinc-300 transition-all duration-100 group-hover:w-60 group-hover:h-80 group-hover:translate-y-[-30px]"
                     />

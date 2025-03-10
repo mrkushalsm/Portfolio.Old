@@ -9,7 +9,7 @@ import Resume from "../portfolio/Resume.jsx";
 import Blogs from "../portfolio/Blogs.jsx";
 import Sidebar from "../../components/portfolio/Sidebar.jsx";
 import Background from "../../components/portfolio/Background.jsx";
-import Footer from "..//portfolio/Footer.jsx"; // Import Footer
+import Footer from "../portfolio/Footer.jsx"; // Import Footer
 
 const sectionsData = [
     { id: "AboutMe", title: "About Me", content: <AboutMe />, direction: null },
