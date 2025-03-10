@@ -8,4 +8,4 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
 })
 
-fs.copySync("src/assets", "dist/assets");
+fs.copySync("src/assets", "public/assets");
