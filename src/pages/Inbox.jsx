@@ -5,7 +5,7 @@ const emails = [
     {
         id: 1,
         subject: "📂 My Portfolio",
-        sender: "Me",
+        sender: "Kushal SM",
         preview: "Check out my work!",
         body: "Hello, check out my portfolio!",
         link: "/portfolio"

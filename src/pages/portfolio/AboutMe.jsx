@@ -35,7 +35,7 @@ const AboutMe = () => {
         >
             {/* Heading Animation: Fade in from top, start big, then shrink */}
             <motion.h2
-                className="text-white uppercase font-bold relative text-center"
+                className="text-6xl font-extrabold text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.2)] uppercase text-center mb-20"
                 initial={{ y: -100, opacity: 0, fontSize: "6rem" }}
                 animate={
                     isVisible

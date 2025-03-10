@@ -5,7 +5,7 @@ import wallpaper from "../../assets/wallpaper.jpg";
 import projectIcon from "../../assets/icons/project.png";
 import skillsIcon from "../../assets/icons/skills.png";
 import aboutMeIcon from "../../assets/icons/info.png";
-import portfolioIcon from "../../assets/icons/portfolio.png";
+import portfolioIcon from "../../assets/icons/exe.png";
 import certificateIcon from "../../assets/icons/certificate.png";
 import blogsIcon from "../../assets/icons/blogs.png";
 import resumeIcon from "../../assets/icons/resume.png";
@@ -30,17 +30,17 @@ const DesktopEnv = () => {
         "Certificates": <Certificates />,
         "Blogs": <Blogs />,
         "Resume": <Resume />,
-        "Portfolio": <PortfolioLoader />, // ✅ Portfolio window shows a terminal-style loader
+        "portfolio.exe": <PortfolioLoader />, // ✅ Portfolio window shows a terminal-style loader
     };
 
 
     const openFolder = (folderName) => {
-        if (folderName === "Portfolio") {
-            if (!openWindows.includes("Portfolio")) {
-                setOpenWindows([...openWindows, "Portfolio"]);
-                windowRefs.current["Portfolio"] = React.createRef();
+        if (folderName === "portfolio.exe") {
+            if (!openWindows.includes("portfolio.exe")) {
+                setOpenWindows([...openWindows, "portfolio.exe"]);
+                windowRefs.current["portfolio.exe"] = React.createRef();
             }
-            setActiveWindow("Portfolio");
+            setActiveWindow("portfolio.exe");
             return;
         }
 
@@ -65,12 +65,12 @@ const DesktopEnv = () => {
         { name: "Certificates", icon: certificateIcon },
         { name: "Blogs", icon: blogsIcon },
         { name: "Resume", icon: resumeIcon },
-        { name: "Portfolio", icon: portfolioIcon },
+        { name: "portfolio.exe", icon: portfolioIcon },
     ];
 
     return (
         <div
-            className="relative w-full h-screen flex flex-col items-center justify-start p-4"
+            className="relative w-full h-screen grid grid-cols-4 p-4"
             style={{
                 backgroundImage: `url(${wallpaper})`,
                 backgroundSize: "cover",

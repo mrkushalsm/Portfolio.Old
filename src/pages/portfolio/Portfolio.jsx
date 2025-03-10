@@ -64,7 +64,7 @@ const Portfolio = () => {
     }, []);
 
     return (
-        <div className="relative min-h-screen overflow-x-hidden bg-base-200/50 overflow-hidden" data-theme="dark">
+        <div className="relative min-h-screen overflow-x-hidden bg-base-200/50" data-theme="dark">
             {/* Background */}
             <div className="fixed inset-0 w-full h-full">
                 <Background />

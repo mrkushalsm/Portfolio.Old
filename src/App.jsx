@@ -28,8 +28,31 @@ const Layout = ({ children }) => {
     const [showHero, setShowHero] = useState(true);
 
     useEffect(() => {
-        document.title = location.pathname === "/desktop" || location.pathname === "/portfolio" ? "Portfolio" : "Email";
-    }, [location.pathname]);
+        // Define tab titles and icons for each page
+        const pageSettings = {
+            "/inbox": { title: "Inbox", icon: "/icons/inbox.ico" },
+            "/email": { title: "Email", icon: "/icons/email.ico" },
+            "/portfolio": { title: "Portfolio", icon: "/icons/portfolio.ico" },
+            "/desktop": { title: "Desktop", icon: "/icons/desktop.ico" },
+            "/boot": { title: "Boot", icon: "/icons/boot.ico" },
+        };
+
+        // Get the current page settings or set default values
+        const { title, icon } = pageSettings[location.pathname] || {
+            title: "Email",
+            icon: "/icons/email.ico",
+        };
+
+        // Change the document title
+        document.title = title;
+
+        // Change the favicon
+        const link = document.querySelector("link[rel='icon']") || document.createElement("link");
+        link.rel = "icon";
+        link.href = icon;
+        document.head.appendChild(link);
+
+    }, [location]);
 
     const hideNavbar = location.pathname === "/desktop" || location.pathname === "/portfolio"; // ✅ Hides Navbar on `/portfolio`
 
