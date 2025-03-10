@@ -12,6 +12,27 @@ const certificateData = [
         date: "February 2025",
         image: "src/assets/certificates/Google Prompting Essentials.jpg",
         link: "https://coursera.org/verify/2G7GP20XWPNY",
+    },
+    {
+        title: "Python Foundation Certification",
+        organization: "Infosys Springboard",
+        date: "December 2024",
+        image: "src/assets/certificates/Infosys Python Foundation Certification.png",
+        link: "https://verify.onwingspan.com/",
+    },
+    {
+        title: "Postman API Fundamentals Student Expert",
+        organization: "Postman",
+        date: "July 2024",
+        image: "src/assets/certificates/Postman API Fundamentals Student Expert.png",
+        link: "https://api.badgr.io/public/assertions/6upoW9X0S-C_2t2PDZY8Mg?identity__email=mrkushalsm%40gmail.com",
+    },
+    {
+        title: "Google Cloud Computing Fundamentals",
+        organization: "Google",
+        date: "July 2024",
+        image: "src/assets/certificates/Google Cloud Computing Fundamentals.png",
+        link: "https://www.credly.com/badges/11e64a5e-63e7-42f5-874e-90c7fd146c4f/public_url",
     }
 ];
 

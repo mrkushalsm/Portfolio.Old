@@ -1,6 +1,7 @@
 import React from "react";
 import profilePic from "../../assets/profile.jpeg"; // Replace with actual image
-import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
+import {FaXTwitter} from "react-icons/fa6";
 
 const AboutMe = () => {
     return (
@@ -27,7 +28,7 @@ const AboutMe = () => {
                     <FaLinkedin className="text-xl hover:text-blue-600" />
                 </a>
                 <a href="https://twitter.com/yourusername" target="_blank" rel="noopener noreferrer">
-                    <FaTwitter className="text-xl hover:text-blue-400" />
+                    <FaXTwitter className="text-xl hover:text-blue-400" />
                 </a>
             </div>
         </div>

@@ -75,12 +75,12 @@ const HeroAnimation = () => {
     };
 
     return (
-        <section className="relative w-full h-screen overflow-hidden bg-base-100 flex items-center justify-center">
+        <section className="relative w-full h-screen overflow-hidden flex items-center justify-center z-2">
             <div className="cover absolute bg-neutral w-full h-[60%] top-[-60%] z-10"></div>
 
             {/* Loading Animation Wrapper */}
             {!showMainContent && (
-                <div className="loading-wrapper absolute flex flex-col items-center justify-center w-full h-full bg-black">
+                <div className="loading-wrapper absolute flex flex-col items-center justify-center w-full h-full">
                     <h3 className="loading-text text-white text-6xl font-bold">
                         {["H", "i", "!"].map((char, i) => (
                             <span key={i} className="inline-block opacity-0 transform -translate-x-8 px-1">

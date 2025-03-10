@@ -7,17 +7,20 @@ const Projects = () => {
         {
             name: "Weather App",
             description: "A real-time weather app using OpenWeather API.",
-            image: "https://source.unsplash.com/300x200/?weather,app"
+            image: "src/assets/projectImg/weatherapp.png",
+            link: "https://weather-app-teal-omega.vercel.app/",
         },
         {
-            name: "Portfolio Site",
+            name: "Portfolio Website",
             description: "A personal portfolio styled like a Windows desktop.",
-            image: "https://source.unsplash.com/300x200/?portfolio,web"
+            image: "src/assets/projectImg/portfoliowebsite.png",
+            link: "",
         },
         {
             name: "Task Manager",
             description: "A simple task management app with drag-and-drop features.",
-            image: "https://source.unsplash.com/300x200/?task,management"
+            image: "https://source.unsplash.com/300x200/?task,management",
+            link: "",
         }
     ];
 

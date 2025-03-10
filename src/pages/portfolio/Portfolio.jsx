@@ -1,24 +1,41 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import "animate.css";
 import HeroAnimation from "../../components/portfolio/HeroAnimation.jsx";
-import AboutMe from "../windowsUI/AboutMe.jsx";
-import Skills from "../windowsUI/Skills.jsx";
-import Projects from "../windowsUI/Projects.jsx";
+import AboutMe from "../portfolio/AboutMe.jsx";
+import Skills from "../portfolio/Skills.jsx";
+import Projects from "../portfolio/Projects.jsx";
+import Certificates from "../portfolio/Certificates.jsx";
+import Resume from "../portfolio/Resume.jsx";
+import Blogs from "../portfolio/Blogs.jsx";
+import Sidebar from "../../components/portfolio/Sidebar.jsx";
+import Background from "../../components/portfolio/Background.jsx";
+import Footer from "..//portfolio/Footer.jsx"; // Import Footer
 
 const sectionsData = [
-    { id: 1, title: "About Me", content: <AboutMe />, direction: "left" }, // Now slides in from the left
-    { id: 2, title: "Skills", content: <Skills />, direction: "right" }, // Now slides in from the right
-    { id: 3, title: "Projects", content: <Projects />, direction: "left" }, // Now slides in from the right
+    { id: "AboutMe", title: "About Me", content: <AboutMe />, direction: null },
+    { id: "Skills", title: "Skills", content: <Skills />, direction: "right" },
+    { id: "Projects", title: "Projects", content: <Projects />, direction: "left" },
+    { id: "Certificates", title: "Certificates", content: <Certificates />, direction: "right" },
+    { id: "Resume", title: "Resume", content: <Resume />, direction: "left" },
+    { id: "Blogs", title: "Blogs", content: <Blogs />, direction: "right" },
 ];
-
 
 const Portfolio = () => {
     const sectionsRef = useRef([]);
+    const [isSidebarVisible, setSidebarVisible] = useState(false);
 
     useEffect(() => {
-        document.documentElement.setAttribute("data-theme", "black");
-        return () => {
-            document.documentElement.removeAttribute("data-theme");
-        };
+        setTimeout(() => {
+            window.scrollTo({
+                top: 0,
+                behavior: "instant",
+            });
+        }, 100);
+    }, []);
+
+    useEffect(() => {
+        const timeout = setTimeout(() => setSidebarVisible(true), 1500);
+        return () => clearTimeout(timeout);
     }, []);
 
     useEffect(() => {
@@ -26,11 +43,17 @@ const Portfolio = () => {
             (entries) => {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
-                        entry.target.classList.add("opacity-100", "translate-x-0");
+                        const { direction } = entry.target.dataset;
+                        entry.target.classList.add(
+                            "animate__animated",
+                            direction === "right" ? "animate__fadeInRight" : "animate__fadeInLeft"
+                        );
+                        entry.target.classList.remove("opacity-0");
+                        observer.unobserve(entry.target);
                     }
                 });
             },
-            { threshold: 0.2 }
+            { threshold: 0.3 }
         );
 
         sectionsRef.current.forEach((section) => {
@@ -41,24 +64,35 @@ const Portfolio = () => {
     }, []);
 
     return (
-        <div className="min-h-screen bg-base-200 overflow-hidden">
+        <div className="relative min-h-screen overflow-x-hidden bg-base-200/50 overflow-hidden" data-theme="dark">
+            {/* Background */}
+            <div className="fixed inset-0 w-full h-full">
+                <Background />
+            </div>
+
             {/* Hero Section */}
             <HeroAnimation />
 
-            {/* Dynamic Sections */}
-            {sectionsData.map(({ id, title, content, direction }, index) => (
+            {/* Sidebar */}
+            {isSidebarVisible && <Sidebar sections={sectionsData} />}
+
+            {/* Sections */}
+            {sectionsData.map(({ id, content, direction }, index) => (
                 <section
                     key={id}
+                    id={id}
                     ref={(el) => (sectionsRef.current[index] = el)}
-                    className={`px-6 md:px-20 py-20 opacity-0 transition-all duration-700 ${
-                        direction === "left" ? "-translate-x-32" : "translate-x-32"
+                    data-direction={direction}
+                    className={`relative min-h-screen flex flex-col justify-center px-6 md:px-20 py-20 transition-all duration-700 ${
+                        direction ? "opacity-100" : ""
                     }`}
                 >
-                    <h2 className="text-4xl font-bold">{title}</h2>
                     <div className="mt-4">{content}</div>
                 </section>
             ))}
 
+            {/* Footer */}
+            <Footer />
         </div>
     );
 };

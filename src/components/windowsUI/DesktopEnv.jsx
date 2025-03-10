@@ -15,6 +15,7 @@ import Skills from "../../pages/windowsUI/Skills";
 import Certificates from "../../pages/windowsUI/Certificates.jsx";
 import Blogs from "../../pages/windowsUI/Blogs.jsx";
 import Resume from "../../pages/windowsUI/Resume.jsx";
+import PortfolioLoader from "./PortfolioLoader.jsx";
 
 const DesktopEnv = () => {
     const [openWindows, setOpenWindows] = useState([]);
@@ -23,17 +24,23 @@ const DesktopEnv = () => {
 
     // Define a mapping of components
     const componentMap = {
-            "Projects": <Projects />,
-            "Skills": <Skills />,
-            "About Me": <AboutMe />,
-            "Certificates": <Certificates />,
-            "Blogs": <Blogs />,
-            "Resume": <Resume />,
+        "Projects": <Projects />,
+        "Skills": <Skills />,
+        "About Me": <AboutMe />,
+        "Certificates": <Certificates />,
+        "Blogs": <Blogs />,
+        "Resume": <Resume />,
+        "Portfolio": <PortfolioLoader />, // ✅ Portfolio window shows a terminal-style loader
     };
+
 
     const openFolder = (folderName) => {
         if (folderName === "Portfolio") {
-            window.open("/portfolio", "_blank"); // ✅ Opens Portfolio in new tab
+            if (!openWindows.includes("Portfolio")) {
+                setOpenWindows([...openWindows, "Portfolio"]);
+                windowRefs.current["Portfolio"] = React.createRef();
+            }
+            setActiveWindow("Portfolio");
             return;
         }
 

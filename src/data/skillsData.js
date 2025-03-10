@@ -15,6 +15,6 @@ export const skillsData = {
     "Core Web Technologies": [
         { name: "HTML", icon: "src/assets/icons/html-5.png", proficiency: "Intermediate", experience: "2+ years", projects: ["TODO", "TODO"], description: "Markup language for structuring web pages." },
         { name: "CSS", icon: "src/assets/icons/css.png", proficiency: "Intermediate", experience: "2+ years", projects: ["TODO", "TODO"], description: "Styling language for designing user interfaces." },
-        { name: "JavaScript", icon: "src/assets/icons/js.png", proficiency: "Intermediate", experience: "1+ years", projects: ["TODO", "TODO"], description: "Scripting language for adding interactivity to websites."}
+        { name: "JavaScript", icon: "src/assets/icons/js.png", proficiency: "Intermediate", experience: "1+ years", projects: ["TODO", "TODO"], description: "Scripting language for adding interactivity to websites." }
     ]
 };

@@ -24,6 +24,76 @@ const emails = [
         preview: "Let’s connect!",
         body: "Hi! I would love to connect and discuss opportunities."
     },
+    {
+        "id": 4,
+        "subject": "🔥 Exciting Project Collaboration",
+        "sender": "Tech Startup",
+        "preview": "We'd love to work with you!",
+        "body": "Hello, we came across your portfolio and are interested in collaborating on an upcoming project."
+    },
+    {
+        "id": 5,
+        "subject": "🎓 Free Online Course",
+        "sender": "CodeAcademy",
+        "preview": "Enroll now for free!",
+        "body": "We are offering a free advanced JavaScript course for a limited time. Sign up today!"
+    },
+    {
+        "id": 6,
+        "subject": "💳 Payment Received",
+        "sender": "PayPal",
+        "preview": "Your payment has been processed.",
+        "body": "You have successfully received a payment of $500.00. Transaction ID: 123456789."
+    },
+    {
+        "id": 7,
+        "subject": "🚀 Your Website is Live!",
+        "sender": "Hosting Provider",
+        "preview": "Your domain is now active.",
+        "body": "Congratulations! Your website is now live on www.yoursite.com."
+    },
+    {
+        "id": 8,
+        "subject": "📢 Important Security Update",
+        "sender": "Google",
+        "preview": "Please update your security settings.",
+        "body": "We've detected unusual login activity on your account. Please review your security settings."
+    },
+    {
+        "id": 9,
+        "subject": "🛒 Order Confirmation",
+        "sender": "Amazon",
+        "preview": "Your order has been placed.",
+        "body": "Your order #987654 has been confirmed. Estimated delivery: 3-5 business days."
+    },
+    {
+        "id": 10,
+        "subject": "📆 Meeting Reminder",
+        "sender": "Zoom",
+        "preview": "Your meeting starts in 30 minutes.",
+        "body": "Reminder: You have a meeting scheduled at 2:00 PM. Click here to join."
+    },
+    {
+        "id": 11,
+        "subject": "🎉 Congratulations! You Won!",
+        "sender": "Giveaway Team",
+        "preview": "Claim your prize now!",
+        "body": "You’ve won our giveaway! Click here to claim your free gift."
+    },
+    {
+        "id": 12,
+        "subject": "💼 New Internship Available",
+        "sender": "LinkedIn",
+        "preview": "A perfect role for you!",
+        "body": "We found an internship that matches your skills. Apply now before it’s gone!"
+    },
+    {
+        "id": 13,
+        "subject": "🔔 Subscription Renewal Notice",
+        "sender": "Netflix",
+        "preview": "Your subscription is about to renew.",
+        "body": "Your Netflix subscription will be renewed on March 15, 2025. No action is needed."
+    },
 ];
 
 const Inbox = () => {
