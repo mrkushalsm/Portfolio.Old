@@ -29,7 +29,7 @@ This is my personal portfolio that features two unique styles:
 - **Loaders:** LottieFiles
 
 ## 🚀 Live Demo
-- Direct link (deployed on Vercel) : https://portfolio-ten-theta-24.vercel.app/
+- Direct link (deployed on Vercel) : https://mrkushalsm.vercel.app/
 
 ## 🔧 Installation & Setup
 1. Clone the repository:
