@@ -3,6 +3,7 @@ import { Canvas, useThree } from "@react-three/fiber";
 import { useCursor, useGLTF } from "@react-three/drei";
 import { gsap } from "gsap";
 import * as THREE from "three";
+import { useNavigate } from "react-router-dom";
 
 const Model = ({ onMonitorClick, setMonitorPosition }) => {
     const { scene } = useGLTF("/assets/model/computerglb.glb");
@@ -48,6 +49,7 @@ const Model = ({ onMonitorClick, setMonitorPosition }) => {
 const CameraController = ({ zoomToMonitor, monitorPosition }) => {
     const { camera } = useThree();
     const isAnimating = useRef(false);
+    const navigate = useNavigate(); // ✅ React Router navigation
 
     useEffect(() => {
         // ✅ Set the initial fixed camera position (side view)
@@ -63,8 +65,8 @@ const CameraController = ({ zoomToMonitor, monitorPosition }) => {
             // ✅ Corrected Target Position: Move up & right to match the monitor screen
             const targetPosition = {
                 x: monitorPosition.x - 7, // Slightly more to the right
-                y: monitorPosition.y + 5.5,    // Higher to align with monitor
-                z: monitorPosition.z,    // Forward towards the screen
+                y: monitorPosition.y + 5.5, // Higher to align with monitor
+                z: monitorPosition.z, // Forward towards the screen
             };
 
             // ✅ Animate camera to zoom in smoothly
@@ -81,11 +83,11 @@ const CameraController = ({ zoomToMonitor, monitorPosition }) => {
                 ease: "power2.inOut",
                 onComplete: () => {
                     console.log("✅ Camera aligned, starting boot sequence...");
-                    window.location.href = "/boot";
+                    navigate("/boot"); // ✅ Use React Router navigation
                 },
             });
         }
-    }, [zoomToMonitor, monitorPosition, camera]);
+    }, [zoomToMonitor, monitorPosition, camera, navigate]);
 
     return null;
 };
@@ -101,7 +103,7 @@ const LandingPage = () => {
 
                 {/* 🔆 Enhanced Lighting */}
                 <ambientLight intensity={1.5} />
-                <directionalLight position={[5, 10, 5]} intensity={3} castShadow={true} />
+                <directionalLight position={[5, 10, 5]} intensity={3} castShadow />
 
                 <Suspense fallback={null}>
                     <Model onMonitorClick={() => setZoomToMonitor(true)} setMonitorPosition={setMonitorPosition} />
