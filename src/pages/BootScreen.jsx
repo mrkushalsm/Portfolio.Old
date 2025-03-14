@@ -1,43 +1,52 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import windowsIcon from "/assets/taskbar/windows-icon.png";
 
 const BootScreen = () => {
     const navigate = useNavigate();
-    const location = useLocation();
-    const redirectTo = location.state?.redirectTo || "/desktop"; // Change default to `/desktop`
-
-    const [step, setStep] = useState(0);
-    const messages = [
-        "Rebooting system...",
-        "Checking disk integrity...",
-        "Loading essential modules...",
-        "Starting graphical interface...",
-        "Initializing desktop environment...",
-    ];
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            setStep((prev) => prev + 1);
-        }, 1500);
+        // ⏳ Redirect to Desktop after 3 seconds
+        const timer = setTimeout(() => {
+            navigate("/desktop");
+        }, 3000);
 
-        if (step >= messages.length) {
-            clearInterval(interval);
-            setTimeout(() => navigate(redirectTo), 2000); // Redirect to DesktopEnv
-        }
-
-        return () => clearInterval(interval);
-    }, [step, navigate, redirectTo]);
+        return () => clearTimeout(timer);
+    }, [navigate]);
 
     return (
-        <div className="flex flex-col items-center justify-center h-screen bg-black text-green-400 font-mono text-lg">
-            {step === 0 ? (
-                <div className="text-red-500 text-2xl">Server Crashed! Restarting...</div>
-            ) : (
-                <>
-                    <div>{messages[Math.min(step - 1, messages.length - 1)]}</div>
-                    <div className="mt-4 animate-pulse">█ █ █ █ █</div>
-                </>
-            )}
+        <div className="h-screen w-screen bg-black flex flex-col items-center justify-center">
+            {/* 🔹 Windows 10 Logo */}
+            <img className="w-48 h-48" src={windowsIcon} alt="Windows" />
+
+            {/* 🛑 Margin between logo & loader */}
+            <div className="mt-40 relative w-20 h-20 flex items-center justify-center">
+                {/* 🔄 Circular Loading Dots */}
+                {[...Array(12)].map((_, i) => (
+                    <div
+                        key={i}
+                        className="absolute w-2 h-2 bg-white rounded-full animate-spin"
+                        style={{
+                            transform: `rotate(${i * 30}deg) translate(35px)`,
+                            animationDelay: `${i * 0.1}s`,
+                        }}
+                    ></div>
+                ))}
+            </div>
+
+            {/* 🔄 Tailwind CSS Animation */}
+            <style>
+                {`
+                @keyframes spin {
+                    0% { opacity: 0.2; }
+                    50% { opacity: 1; }
+                    100% { opacity: 0.2; }
+                }
+                .animate-spin {
+                    animation: spin 1.2s linear infinite;
+                }
+                `}
+            </style>
         </div>
     );
 };
