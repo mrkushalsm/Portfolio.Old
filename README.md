@@ -29,10 +29,7 @@ This is my personal portfolio that features two unique styles:
 - **Loaders:** LottieFiles
 
 ## 🚀 Live Demo
-- Direct link: LINK
-- Email Page (to start from here): [Email](#)
-- Minimalist Portfolio: [Portfolio](#)
-- Windows UI Portfolio: [Desktop UI](#)
+- Direct link (deployed on Vercel) : https://mrkushalsm.vercel.app/
 
 ## 🔧 Installation & Setup
 1. Clone the repository:
@@ -72,7 +69,7 @@ This is my personal portfolio that features two unique styles:
 - **Yash** – Guidance on writing better commit messages.
 
 ## 📩 Contact
-- **GitHub:** [yourusername](https://github.com/yourusername)
+- **GitHub:** [mrkushalsm](https://github.com/mrkushalsm)
 - **Email:** [mrkushalsm@gmail.com](mailto:mrkushalsm@gmail.com)
 
 ## 📜 License
