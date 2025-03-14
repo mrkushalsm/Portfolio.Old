@@ -30,14 +30,12 @@ const PageWrapper = () => {
     }, [location]);
 
     return (
-        <div className="h-screen w-screen bg-zinc-800">
-            <Routes>
-                <Route path="/" element={<LandingPage />} />
-                <Route path="/boot" element={<BootScreen />} />
-                <Route path="/desktop" element={<DesktopEnv />} />
-                <Route path="/portfolio" element={<Portfolio />} />
-            </Routes>
-        </div>
+        <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/boot" element={<BootScreen />} />
+            <Route path="/desktop" element={<DesktopEnv />} />
+            <Route path="/portfolio" element={<Portfolio />} />
+        </Routes>
     );
 };
 

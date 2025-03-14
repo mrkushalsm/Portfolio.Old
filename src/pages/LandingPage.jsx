@@ -95,7 +95,7 @@ const LandingPage = () => {
     const [monitorPosition, setMonitorPosition] = useState(null);
 
     return (
-        <div className="h-screen w-screen">
+        <div className="h-screen w-screen bg-zinc-800">
             <Canvas shadows>
                 <CameraController zoomToMonitor={zoomToMonitor} monitorPosition={monitorPosition} />
 
