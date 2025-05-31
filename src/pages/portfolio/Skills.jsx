@@ -6,7 +6,7 @@ const allSkills = Object.entries(skillsData).flatMap(([category, skills]) =>
     skills.map((skill) => ({ ...skill, category }))
 );
 
-const Skills = () => {
+const Skills = ({ onToggleView }) => {
     const [selectedSkill, setSelectedSkill] = useState(null);
     const [angle, setAngle] = useState(0);
     const [isTransitioning, setIsTransitioning] = useState(false);
@@ -28,7 +28,6 @@ const Skills = () => {
 
     const handleSelectSkill = (skill, index) => {
         if (selectedSkill || isTransitioning) return;
-
         const { x, y } = getSkillPosition(index);
         setSelectedSkill({ ...skill, index, originalX: x, originalY: y });
     };
@@ -41,17 +40,30 @@ const Skills = () => {
         }, 300);
     };
 
+    const handleSkillsHeadingClick = () => {
+        console.log('Skills heading clicked!'); // Debug log
+        if (onToggleView) {
+            console.log('Calling onToggleView'); // Debug log
+            onToggleView();
+        } else {
+            console.log('onToggleView is not defined'); // Debug log
+        }
+    };
+
     return (
         <div className="relative flex items-center justify-center min-h-screen w-full overflow-hidden">
-            {/* Glowing SKILLS heading */}
+            {/* Glowing SKILLS heading - clickable */}
             <AnimatePresence>
                 {!selectedSkill && (
                     <motion.h1
-                        className="absolute text-6xl font-extrabold text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.8)]"
+                        className="absolute text-6xl font-extrabold text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.8)] cursor-pointer hover:drop-shadow-[0_0_30px_rgba(255,255,255,1)] transition-all duration-300"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.5 }}
+                        onClick={handleSkillsHeadingClick}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.95 }}
                     >
                         SKILLS
                     </motion.h1>
@@ -62,7 +74,6 @@ const Skills = () => {
             {allSkills.map((skill, index) => {
                 const { x, y } = getSkillPosition(index);
                 const isSelected = selectedSkill?.name === skill.name;
-
                 return (
                     <motion.div
                         key={skill.name}
@@ -111,8 +122,6 @@ const Skills = () => {
                                 ease: "easeInOut"
                             }}
                         />
-
-
                         <h2 className="text-2xl font-bold">{selectedSkill.name}</h2>
                         <p className="text-sm opacity-80">Category: {selectedSkill.category}</p>
                         <p className="text-sm opacity-80">{selectedSkill.experience} Experience</p>

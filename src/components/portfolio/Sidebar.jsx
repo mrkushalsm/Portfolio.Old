@@ -60,15 +60,16 @@ const Sidebar = ({ sections }) => {
 
     return (
         <div
-            className={`fixed left-4 top-1/2 transform -translate-y-1/2 flex flex-col space-y-6 bg-base-300/20 p-3 rounded-full shadow-full z-50 pointer-events-auto
+            className={`fixed flex bg-base-300/20 p-3 rounded-full shadow-full z-50 pointer-events-auto
             ${isVisible ? "animate__animated animate__fadeInLeft" : "opacity-0"}
-        `}
+            md:transform md:-translate-y-1/2 md:flex-col md:space-y-6
+            flex-row space-x-4 md:space-x-0 md:bg-y md:top-1/2 md:left-4 bottom-4 w-screen md:w-fit justify-center`}
         >
             {sections.map(({ id, title }) => (
                 <button
                     key={id}
                     onClick={() => handleScroll(id)}
-                    className={`tooltip tooltip-right btn btn-circle btn-neutral cursor-pointer transition-all duration-300 ${
+                    className={`tooltip tooltip-top md:tooltip-right btn btn-circle btn-neutral cursor-pointer transition-all duration-300 ${
                         activeSection === id ? "shadow-[0_0_15px_4px_rgba(255,255,255,0.9)] scale-110" : ""
                     }`}
                     data-tip={title}

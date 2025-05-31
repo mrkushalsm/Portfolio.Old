@@ -93,10 +93,10 @@ const HeroAnimation = () => {
 
             {/* Main Content (Revealed After Animation) */}
             {showMainContent && (
-                <div className="main_content text-base-content text-center w-[60%]">
-                    <h1 className="text-6xl font-bold main-text">
-                        {"Welcome to my portfolio!".split("").map((char, i) => (
-                            <span key={i} className="inline-block opacity-0 transform translate-y-4 px-1">
+                <div className="main_content text-base-content text-center w-[70%] md:w-[80%]">
+                    <h1 className="text-5xl md:text-6xl font-bold main-text">
+                        {"Welcome      to      my      portfolio!".split("").map((char, i) => (
+                            <span key={i} className="inline-block opacity-0 transform translate-y-4 px-1 p-3">
                                 {char}
                             </span>
                         ))}

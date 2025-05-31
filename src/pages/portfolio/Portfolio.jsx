@@ -1,28 +1,84 @@
 import React, { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import "animate.css";
 import HeroAnimation from "../../components/portfolio/HeroAnimation.jsx";
 import AboutMe from "../portfolio/AboutMe.jsx";
 import Skills from "../portfolio/Skills.jsx";
+import SkillsCarousel from "../portfolio/SkillsCarousel.jsx";
 import Projects from "../portfolio/Projects.jsx";
 import Certificates from "../portfolio/Certificates.jsx";
 import Resume from "../portfolio/Resume.jsx";
 import Blogs from "../portfolio/Blogs.jsx";
 import Sidebar from "../../components/portfolio/Sidebar.jsx";
 import Background from "../../components/portfolio/Background.jsx";
-import Footer from "../portfolio/Footer.jsx"; // Import Footer
+import Footer from "../portfolio/Footer.jsx";
 
-const sectionsData = [
-    { id: "AboutMe", title: "About Me", content: <AboutMe />, direction: null },
-    { id: "Skills", title: "Skills", content: <Skills />, direction: "right" },
-    { id: "Projects", title: "Projects", content: <Projects />, direction: "left" },
-    { id: "Certificates", title: "Certificates", content: <Certificates />, direction: "right" },
-    { id: "Resume", title: "Resume", content: <Resume />, direction: "left" },
-    { id: "Blogs", title: "Blogs", content: <Blogs />, direction: "right" },
-];
+// Skills wrapper component to handle toggling
+const SkillsSection = () => {
+    // Initialize based on mobile view (<640px)
+    const [showSkillsCarousel, setShowSkillsCarousel] = useState(() => {
+        return window.matchMedia("(max-width: 639px)").matches;
+    });
+
+    // Update state on window resize
+    useEffect(() => {
+        const mediaQuery = window.matchMedia("(max-width: 639px)");
+        const handleResize = () => {
+            setShowSkillsCarousel(mediaQuery.matches);
+        };
+
+        mediaQuery.addEventListener("change", handleResize);
+        return () => mediaQuery.removeEventListener("change", handleResize);
+    }, []);
+
+    const handleToggleView = () => {
+        setShowSkillsCarousel(!showSkillsCarousel);
+    };
+
+    return (
+        <AnimatePresence mode="wait">
+            {showSkillsCarousel ? (
+                <motion.div
+                    key="carousel"
+                    initial={{ opacity: 0, x: 100 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -100 }}
+                    transition={{ duration: 0.5 }}
+                >
+                    <SkillsCarousel onToggleView={handleToggleView} />
+                </motion.div>
+            ) : (
+                <motion.div
+                    key="circle"
+                    initial={{ opacity: 0, x: -100 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 100 }}
+                    transition={{ duration: 0.5 }}
+                >
+                    <Skills onToggleView={handleToggleView} />
+                </motion.div>
+            )}
+        </AnimatePresence>
+    );
+};
 
 const Portfolio = () => {
     const sectionsRef = useRef([]);
     const [isSidebarVisible, setSidebarVisible] = useState(false);
+
+    const sectionsData = [
+        { id: "AboutMe", title: "About Me", content: <AboutMe />, direction: null },
+        {
+            id: "Skills",
+            title: "Skills",
+            content: <SkillsSection />,
+            direction: "right"
+        },
+        { id: "Projects", title: "Projects", content: <Projects />, direction: "left" },
+        { id: "Certificates", title: "Certificates", content: <Certificates />, direction: "right" },
+        { id: "Resume", title: "Resume", content: <Resume />, direction: "left" },
+        { id: "Blogs", title: "Blogs", content: <Blogs />, direction: "right" },
+    ];
 
     useEffect(() => {
         setTimeout(() => {
