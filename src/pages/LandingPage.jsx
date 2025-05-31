@@ -114,144 +114,145 @@
 // };
 //
 // export default LandingPage;
-import React, { Suspense, useEffect, useRef, useState } from "react";
-import { Canvas, useThree } from "@react-three/fiber";
-import { useCursor, useGLTF } from "@react-three/drei";
-import { gsap } from "gsap";
-import * as THREE from "three";
-import { useNavigate } from "react-router-dom";
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 
-const Model = ({ onMonitorClick, setMonitorPosition }) => {
-    const { scene } = useGLTF("/assets/model/computerglb.glb");
-    const [hovered, setHovered] = useState(false);
-    const monitorRef = useRef(null);
-
-    useCursor(hovered);
-
-    useEffect(() => {
-        scene.traverse((child) => {
-            if (child.isMesh) {
-                child.material.envMapIntensity = 1;
-                child.material.metalness = 1;
-                child.material.roughness = 0.1;
-            }
-
-            if (child.isMesh && child.name.includes("Monitor")) {
-                monitorRef.current = child;
-                child.userData.clickable = true;
-
-                // ✅ Get Monitor's Exact Position in World Space
-                const worldPosition = new THREE.Vector3();
-                child.getWorldPosition(worldPosition);
-
-                // ✅ Update state with monitor's position
-                setMonitorPosition(worldPosition);
-            }
-        });
-    }, [scene, setMonitorPosition]);
-
-    return (
-        <primitive
-            object={scene}
-            onPointerOver={(e) => {
-                if (e.object.userData.clickable) setHovered(true);
-            }}
-            onPointerOut={() => setHovered(false)}
-            onClick={(e) => {
-                if (e.object.userData.clickable) {
-                    onMonitorClick();
-                }
-            }}
-            scale={[1, 1, 1]}
-            position={[0, -1, 0]}
-        />
-    );
-};
-
-const CameraController = ({ zoomToMonitor, monitorPosition }) => {
-    const { camera, scene, gl } = useThree();
-    const isAnimating = useRef(false);
-    const navigate = useNavigate(); // ✅ React Router navigation
-
-    useEffect(() => {
-        // ✅ Set the initial fixed camera position (side view)
-        camera.position.set(0.032, 0.121, 0.5);
-        camera.rotation.set(-0.521, 0.468, 0.253);
-    }, [camera]);
-
-    useEffect(() => {
-        // ✅ Load HDRI for realistic reflections
-        const loader = new RGBELoader();
-        loader.load("/assets/hdri/studio_1k.hdr", (texture) => {
-            texture.mapping = THREE.EquirectangularReflectionMapping;
-            scene.environment = texture;
-            scene.background = null; // Keeps the background transparent while applying reflections
-        });
-    }, [scene]);
-
-    useEffect(() => {
-        // ✅ Enable proper tone mapping
-        gl.toneMapping = THREE.ACESFilmicToneMapping;
-        gl.toneMappingExposure = 1.2;
-    }, [gl]);
-
-    useEffect(() => {
-        if (zoomToMonitor && monitorPosition && !isAnimating.current) {
-            isAnimating.current = true;
-            console.log("📷 Adjusting camera to monitor...");
-
-            const targetPosition = {
-                x: monitorPosition.x + 0.11,
-                y: monitorPosition.y,
-                z: monitorPosition.z,
-            };
-
-            gsap.to(camera.position, {
-                ...targetPosition,
-                duration: 1.5,
-                ease: "power2.inOut",
-            });
-
-            gsap.to(camera.rotation, {
-                x: 0,
-                y: 1.65,
-                z: 0,
-                duration: 1.5,
-                ease: "power2.inOut",
-                onComplete: () => {
-                    console.log("✅ Camera aligned, starting boot sequence...");
-                    navigate("/boot");
-                },
-            });
-        }
-    }, [zoomToMonitor, monitorPosition, camera, navigate]);
-
-    return null;
-};
-
-const LandingPage = () => {
-    const [zoomToMonitor, setZoomToMonitor] = useState(false);
-    const [monitorPosition, setMonitorPosition] = useState(null);
-
-    return (
-        <div className="h-screen w-screen bg-zinc-800">
-            <Canvas shadows>
-                <CameraController zoomToMonitor={zoomToMonitor} monitorPosition={monitorPosition} />
-
-                {/* 🔆 Enhanced Lighting */}
-                <ambientLight intensity={1.5} />
-                <directionalLight position={[5, 10, 5]} intensity={3} castShadow />
-
-                <Suspense fallback={null}>
-                    <Model onMonitorClick={() => setZoomToMonitor(true)} setMonitorPosition={setMonitorPosition} />
-                </Suspense>
-            </Canvas>
-        </div>
-    );
-};
-
-export default LandingPage;
+// import React, { Suspense, useEffect, useRef, useState } from "react";
+// import { Canvas, useThree } from "@react-three/fiber";
+// import { useCursor, useGLTF } from "@react-three/drei";
+// import { gsap } from "gsap";
+// import * as THREE from "three";
+// import { useNavigate } from "react-router-dom";
+// import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
+//
+// const Model = ({ onMonitorClick, setMonitorPosition }) => {
+//     const { scene } = useGLTF("/assets/model/computerglb.glb");
+//     const [hovered, setHovered] = useState(false);
+//     const monitorRef = useRef(null);
+//
+//     useCursor(hovered);
+//
+//     useEffect(() => {
+//         scene.traverse((child) => {
+//             if (child.isMesh) {
+//                 child.material.envMapIntensity = 1;
+//                 child.material.metalness = 1;
+//                 child.material.roughness = 0.1;
+//             }
+//
+//             if (child.isMesh && child.name.includes("Monitor")) {
+//                 monitorRef.current = child;
+//                 child.userData.clickable = true;
+//
+//                 // ✅ Get Monitor's Exact Position in World Space
+//                 const worldPosition = new THREE.Vector3();
+//                 child.getWorldPosition(worldPosition);
+//
+//                 // ✅ Update state with monitor's position
+//                 setMonitorPosition(worldPosition);
+//             }
+//         });
+//     }, [scene, setMonitorPosition]);
+//
+//     return (
+//         <primitive
+//             object={scene}
+//             onPointerOver={(e) => {
+//                 if (e.object.userData.clickable) setHovered(true);
+//             }}
+//             onPointerOut={() => setHovered(false)}
+//             onClick={(e) => {
+//                 if (e.object.userData.clickable) {
+//                     onMonitorClick();
+//                 }
+//             }}
+//             scale={[1, 1, 1]}
+//             position={[0, -1, 0]}
+//         />
+//     );
+// };
+//
+// const CameraController = ({ zoomToMonitor, monitorPosition }) => {
+//     const { camera, scene, gl } = useThree();
+//     const isAnimating = useRef(false);
+//     const navigate = useNavigate(); // ✅ React Router navigation
+//
+//     useEffect(() => {
+//         // ✅ Set the initial fixed camera position (side view)
+//         camera.position.set(0.032, 0.121, 0.5);
+//         camera.rotation.set(-0.521, 0.468, 0.253);
+//     }, [camera]);
+//
+//     useEffect(() => {
+//         // ✅ Load HDRI for realistic reflections
+//         const loader = new RGBELoader();
+//         loader.load("/assets/hdri/studio_1k.hdr", (texture) => {
+//             texture.mapping = THREE.EquirectangularReflectionMapping;
+//             scene.environment = texture;
+//             scene.background = null; // Keeps the background transparent while applying reflections
+//         });
+//     }, [scene]);
+//
+//     useEffect(() => {
+//         // ✅ Enable proper tone mapping
+//         gl.toneMapping = THREE.ACESFilmicToneMapping;
+//         gl.toneMappingExposure = 1.2;
+//     }, [gl]);
+//
+//     useEffect(() => {
+//         if (zoomToMonitor && monitorPosition && !isAnimating.current) {
+//             isAnimating.current = true;
+//             console.log("📷 Adjusting camera to monitor...");
+//
+//             const targetPosition = {
+//                 x: monitorPosition.x + 0.11,
+//                 y: monitorPosition.y,
+//                 z: monitorPosition.z,
+//             };
+//
+//             gsap.to(camera.position, {
+//                 ...targetPosition,
+//                 duration: 1.5,
+//                 ease: "power2.inOut",
+//             });
+//
+//             gsap.to(camera.rotation, {
+//                 x: 0,
+//                 y: 1.65,
+//                 z: 0,
+//                 duration: 1.5,
+//                 ease: "power2.inOut",
+//                 onComplete: () => {
+//                     console.log("✅ Camera aligned, starting boot sequence...");
+//                     navigate("/boot");
+//                 },
+//             });
+//         }
+//     }, [zoomToMonitor, monitorPosition, camera, navigate]);
+//
+//     return null;
+// };
+//
+// const LandingPage = () => {
+//     const [zoomToMonitor, setZoomToMonitor] = useState(false);
+//     const [monitorPosition, setMonitorPosition] = useState(null);
+//
+//     return (
+//         <div className="h-screen w-screen bg-zinc-800">
+//             <Canvas shadows>
+//                 <CameraController zoomToMonitor={zoomToMonitor} monitorPosition={monitorPosition} />
+//
+//                 {/* 🔆 Enhanced Lighting */}
+//                 <ambientLight intensity={1.5} />
+//                 <directionalLight position={[5, 10, 5]} intensity={3} castShadow />
+//
+//                 <Suspense fallback={null}>
+//                     <Model onMonitorClick={() => setZoomToMonitor(true)} setMonitorPosition={setMonitorPosition} />
+//                 </Suspense>
+//             </Canvas>
+//         </div>
+//     );
+// };
+//
+// export default LandingPage;
 
 // import React, { Suspense, useRef } from "react";
 // import { Canvas, useThree } from "@react-three/fiber";
@@ -319,3 +320,169 @@ export default LandingPage;
 // };
 //
 // export default LandingPage;
+
+import React, { Suspense, useEffect, useRef, useState } from "react";
+import { Canvas, useThree } from "@react-three/fiber";
+import { useCursor, useGLTF, useProgress, Html } from "@react-three/drei";
+import { gsap } from "gsap";
+import * as THREE from "three";
+import { useNavigate } from "react-router-dom";
+import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
+
+// Loader Overlay with percentage
+const LoaderOverlay = () => {
+    const { progress } = useProgress();
+    return (
+        <Html center>
+            <div className="fixed inset-0 flex items-center justify-center bg-zinc-900 z-50">
+                <div className="text-center text-white">
+                    <p className="text-xl font-semibold mb-2">Loading 3D Environment...</p>
+                    <p className="text-lg">{Math.floor(progress)}%</p>
+                    <progress className="progress w-56 mt-2" value={progress} max="100" />
+                </div>
+            </div>
+        </Html>
+    );
+};
+
+// Hint Message Overlay
+const HintOverlay = () => (
+    <Html center>
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 bg-black/80 text-white px-6 py-4 rounded-xl shadow-lg w-80 h-20 flex items-center justify-center text-center text-sm font-medium">
+            💡 Hint: Click on the laptop display to continue
+        </div>
+    </Html>
+);
+
+
+// 3D Model Component
+const Model = ({ onMonitorClick, setMonitorPosition, setShowHint }) => {
+    const { scene } = useGLTF("/assets/model/computerglb.glb", true);
+    const [hovered, setHovered] = useState(false);
+    const monitorRef = useRef(null);
+
+    useCursor(hovered);
+
+    useEffect(() => {
+        scene.traverse((child) => {
+            if (child.isMesh) {
+                child.material.envMapIntensity = 1;
+                child.material.metalness = 1;
+                child.material.roughness = 0.1;
+            }
+
+            if (child.isMesh && child.name.includes("Monitor")) {
+                monitorRef.current = child;
+                child.userData.clickable = true;
+
+                const worldPosition = new THREE.Vector3();
+                child.getWorldPosition(worldPosition);
+                setMonitorPosition(worldPosition);
+                setShowHint(true); // Show the hint once monitor is positioned
+            }
+        });
+    }, [scene, setMonitorPosition, setShowHint]);
+
+    return (
+        <primitive
+            object={scene}
+            onPointerOver={(e) => e.object.userData.clickable && setHovered(true)}
+            onPointerOut={() => setHovered(false)}
+            onClick={(e) => {
+                if (e.object.userData.clickable) {
+                    setShowHint(false); // Hide hint on click
+                    onMonitorClick();
+                }
+            }}
+            scale={[1, 1, 1]}
+            position={[0, -1, 0]}
+        />
+    );
+};
+
+// Camera Controller
+const CameraController = ({ zoomToMonitor, monitorPosition }) => {
+    const { camera, scene, gl } = useThree();
+    const isAnimating = useRef(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        camera.position.set(0.032, 0.121, 0.5);
+        camera.rotation.set(-0.521, 0.468, 0.253);
+    }, [camera]);
+
+    useEffect(() => {
+        const loader = new RGBELoader();
+        loader.load("/assets/hdri/studio_1k.hdr", (texture) => {
+            texture.mapping = THREE.EquirectangularReflectionMapping;
+            scene.environment = texture;
+            scene.background = null;
+        });
+    }, [scene]);
+
+    useEffect(() => {
+        gl.toneMapping = THREE.ACESFilmicToneMapping;
+        gl.toneMappingExposure = 1.2;
+    }, [gl]);
+
+    useEffect(() => {
+        if (zoomToMonitor && monitorPosition && !isAnimating.current) {
+            isAnimating.current = true;
+
+            const targetPosition = {
+                x: monitorPosition.x + 0.11,
+                y: monitorPosition.y,
+                z: monitorPosition.z,
+            };
+
+            gsap.to(camera.position, {
+                ...targetPosition,
+                duration: 1.5,
+                ease: "power2.inOut",
+            });
+
+            gsap.to(camera.rotation, {
+                x: 0,
+                y: 1.65,
+                z: 0,
+                duration: 1.5,
+                ease: "power2.inOut",
+                onComplete: () => {
+                    navigate("/boot");
+                },
+            });
+        }
+    }, [zoomToMonitor, monitorPosition, camera, navigate]);
+
+    return null;
+};
+
+// Main Landing Page
+const LandingPage = () => {
+    const [zoomToMonitor, setZoomToMonitor] = useState(false);
+    const [monitorPosition, setMonitorPosition] = useState(null);
+    const [showHint, setShowHint] = useState(false);
+
+    return (
+        <div className="h-screen w-screen bg-zinc-800">
+            <Canvas shadows>
+                <Suspense fallback={<LoaderOverlay />}>
+                    <CameraController
+                        zoomToMonitor={zoomToMonitor}
+                        monitorPosition={monitorPosition}
+                    />
+                    <ambientLight intensity={1.5} />
+                    <directionalLight position={[5, 10, 5]} intensity={3} castShadow />
+                    <Model
+                        onMonitorClick={() => setZoomToMonitor(true)}
+                        setMonitorPosition={setMonitorPosition}
+                        setShowHint={setShowHint}
+                    />
+                    {showHint && <HintOverlay />}
+                </Suspense>
+            </Canvas>
+        </div>
+    );
+};
+
+export default LandingPage;
