@@ -63,7 +63,7 @@ const Sidebar = ({ sections }) => {
             className={`fixed flex bg-base-300/20 p-3 rounded-full shadow-full z-50 pointer-events-auto
             ${isVisible ? "animate__animated animate__fadeInLeft" : "opacity-0"}
             md:transform md:-translate-y-1/2 md:flex-col md:space-y-6
-            flex-row space-x-4 md:space-x-0 md:bg-y md:top-1/2 md:left-4 bottom-4 w-screen md:w-fit justify-center`}
+            flex-row space-x-4 md:space-x-0 md:bg-y md:top-1/2 md:left-4 bottom-4 w-screen md:w-fit h-fit justify-evenly`}
         >
             {sections.map(({ id, title }) => (
                 <button
