@@ -20,6 +20,7 @@ import PortfolioLoader from "./PortfolioLoader.jsx";
 const DesktopEnv = () => {
     const [openWindows, setOpenWindows] = useState([]);
     const [activeWindow, setActiveWindow] = useState(null);
+    const [windowVisibility, setWindowVisibility] = useState({});
     const windowRefs = useRef({});
 
     // Define a mapping of components
@@ -35,25 +36,49 @@ const DesktopEnv = () => {
 
 
     const openFolder = (folderName) => {
-        if (folderName === "portfolio.exe") {
-            if (!openWindows.includes("portfolio.exe")) {
-                setOpenWindows([...openWindows, "portfolio.exe"]);
-                windowRefs.current["portfolio.exe"] = React.createRef();
-            }
-            setActiveWindow("portfolio.exe");
+        // If window exists but is hidden, show it
+        if (openWindows.includes(folderName) && windowVisibility[folderName] === false) {
+            setWindowVisibility(prev => ({
+                ...prev,
+                [folderName]: true
+            }));
+            setActiveWindow(folderName);
             return;
         }
 
+        // If window doesn't exist, create it
         if (!openWindows.includes(folderName)) {
-            setOpenWindows([...openWindows, folderName]);
+            setOpenWindows(prev => [...prev, folderName]);
             windowRefs.current[folderName] = React.createRef();
+            setWindowVisibility(prev => ({
+                ...prev,
+                [folderName]: true
+            }));
         }
+        
         setActiveWindow(folderName);
     };
 
     const closeFolder = (folderName) => {
-        setOpenWindows(openWindows.filter((name) => name !== folderName));
+        setOpenWindows(prev => prev.filter((name) => name !== folderName));
+        setWindowVisibility(prev => {
+            const newVis = {...prev};
+            delete newVis[folderName];
+            return newVis;
+        });
         if (activeWindow === folderName) {
+            setActiveWindow(null);
+        }
+    };
+
+    const toggleMinimizeWindow = (windowName) => {
+        setWindowVisibility(prev => ({
+            ...prev,
+            [windowName]: !prev[windowName]
+        }));
+        
+        // If we're minimizing the active window, clear the active window
+        if (activeWindow === windowName && windowVisibility[windowName] !== false) {
             setActiveWindow(null);
         }
     };
@@ -69,41 +94,63 @@ const DesktopEnv = () => {
     ];
 
     return (
-        <div
-            className="relative w-full h-screen grid grid-cols-4 p-4"
+        <div className="relative w-full h-screen overflow-hidden bg-cover bg-center"
             style={{
                 backgroundImage: `url(${wallpaper})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
             }}
         >
-            {/* Desktop Icons */}
-            <div className="absolute top-10 left-10 flex flex-col gap-6">
+            {/* Desktop Icons - Higher z-index to stay above windows */}
+            <div className="absolute top-10 left-10 flex flex-col gap-6 z-40">
                 {desktopIcons.map((icon) => (
                     <div
                         key={icon.name}
-                        className="flex flex-col cursor-pointer text-white justify-center items-center p-4 hover:bg-zinc-700"
+                        className="flex flex-col cursor-pointer text-white justify-center items-center p-2 hover:bg-gray-700/50 rounded transition-colors"
                         onClick={() => openFolder(icon.name)}
                     >
-                        <img src={icon.icon} alt={icon.name} height="32px" width="32px" />
-                        <br /> {icon.name}
+                        <div className="p-2">
+                            <img src={icon.icon} alt={icon.name} height="32px" width="32px" className="pointer-events-none" />
+                        </div>
+                        <span className="text-sm text-white/90 text-shadow">{icon.name}</span>
                     </div>
                 ))}
             </div>
 
-            {/* Windows */}
-            {openWindows.map((folder) => (
-                <WindowCard
-                    key={folder}
-                    ref={windowRefs.current[folder]}
-                    title={folder}
-                    onClose={() => closeFolder(folder)}
-                    isActive={activeWindow === folder}
-                    onClick={() => setActiveWindow(folder)}
-                >
-                    {componentMap[folder] || `Content for ${folder} goes here.`}
-                </WindowCard>
-            ))}
+            {/* Windows - Container with pointer-events-none to allow clicks through to desktop */}
+            <div className="absolute inset-0 pointer-events-none">
+                {openWindows.map((folder) => (
+                    <div 
+                        key={folder} 
+                        className="pointer-events-auto"
+                        style={{
+                            display: windowVisibility[folder] === false ? 'none' : 'block',
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            overflow: 'hidden',
+                            pointerEvents: 'auto'
+                        }}
+                        onClick={(e) => {
+                            // Stop propagation to prevent clicks from going through the window
+                            e.stopPropagation();
+                            setActiveWindow(folder);
+                        }}
+                    >
+                        <WindowCard
+                            ref={windowRefs.current[folder]}
+                            title={folder}
+                            onClose={() => closeFolder(folder)}
+                            isActive={activeWindow === folder}
+                            isVisible={windowVisibility[folder] !== false}
+                            onMinimize={() => toggleMinimizeWindow(folder)}
+                            onClick={() => setActiveWindow(folder)}
+                        >
+                            {componentMap[folder] || `Content for ${folder} goes here.`}
+                        </WindowCard>
+                    </div>
+                ))}
+            </div>
 
             {/* Taskbar */}
             <Taskbar
@@ -111,6 +158,8 @@ const DesktopEnv = () => {
                 activeWindow={activeWindow}
                 setActiveWindow={setActiveWindow}
                 desktopIcons={desktopIcons}
+                windowVisibility={windowVisibility}
+                onToggleMinimize={toggleMinimizeWindow}
             />
         </div>
     );

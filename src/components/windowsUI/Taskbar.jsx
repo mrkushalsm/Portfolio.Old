@@ -4,7 +4,14 @@ import volumeMute from "/assets/taskbar/volume-mute.png";
 import wifi from "/assets/taskbar/wifi.png";
 import battery from "/assets/taskbar/battery.png";
 
-const Taskbar = ({ openWindows, activeWindow, setActiveWindow, desktopIcons }) => {
+const Taskbar = ({ 
+    openWindows, 
+    activeWindow, 
+    setActiveWindow, 
+    desktopIcons,
+    windowVisibility = {},
+    onToggleMinimize 
+}) => {
     const [time, setTime] = useState(new Date());
 
     useEffect(() => {
@@ -15,38 +22,89 @@ const Taskbar = ({ openWindows, activeWindow, setActiveWindow, desktopIcons }) =
         return () => clearInterval(timer);
     }, []);
 
+    const handleWindowClick = (window) => {
+        if (windowVisibility[window] === false) {
+            // If window is minimized, restore it
+            onToggleMinimize?.(window);
+            setActiveWindow(window);
+        } else if (activeWindow === window) {
+            // If window is active, minimize it
+            onToggleMinimize?.(window);
+        } else {
+            // Bring to front and focus
+            setActiveWindow(window);
+        }
+    };
+
     return (
-        <div className="fixed bottom-0 left-0 w-full bg-zinc-900 text-white p-2 flex justify-between items-center">
+        <div className="fixed bottom-0 left-0 w-full bg-zinc-900/95 backdrop-blur-sm text-white p-1.5 flex justify-between items-center border-t border-zinc-700 z-50 overflow-hidden">
             {/* Left side: Windows button + Opened Apps */}
-            <div className="flex gap-4">
-                <button className="p-2 rounded hover:bg-zinc-800 w-9 h-9">
-                    <img src={windowsIcon} alt="Windows icon" />
-                </button>
+            <div className="flex-1 flex items-center h-12">
+                <div className="flex items-center h-full pl-2 pr-1">
+                    <button className="p-2 rounded hover:bg-zinc-800 w-10 h-10 flex-shrink-0 flex items-center justify-center">
+                        <img src={windowsIcon} alt="Windows icon" className="w-6 h-6" />
+                    </button>
+                </div>
 
-                {/* Show icons instead of names */}
-                {openWindows.map((window) => {
-                    const iconData = desktopIcons.find((icon) => icon.name === window);
-                    return (
-                        <button
-                            key={window}
-                            className={`p-2 rounded cursor-pointer flex items-center hover:bg-zinc-800 ${
-                                activeWindow === window ? "bg-zinc-800" : ""
-                            }`}
-                            onClick={() => setActiveWindow(window)}
-                        >
-                            {iconData && <img src={iconData.icon} alt={window} className="w-6 h-6" />}
+                {/* App Icons */}
+                <div className="flex-1 flex items-center h-full overflow-x-auto hide-scrollbar px-1">
+                    <div className="flex items-center space-x-1 h-full">
+                        {openWindows.map((window) => {
+                            const iconData = desktopIcons.find((icon) => icon.name === window);
+                            return (
+                                <button
+                                    key={window}
+                                    className={`p-2 rounded cursor-pointer flex items-center justify-center w-10 h-10 flex-shrink-0 ${
+                                        activeWindow === window && windowVisibility[window] !== false
+                                            ? "bg-gray-500/30" 
+                                            : "hover:bg-gray-600/30"
+                                    }`}
+                                    onClick={() => handleWindowClick(window)}
+                                >
+                                    {iconData && (
+                                        <img 
+                                            src={iconData.icon} 
+                                            alt={window} 
+                                            className="w-6 h-6" 
+                                        />
+                                    )}
+                                </button>
+                            );
+                        })}
+                    </div>
+                </div>
+            </div>
+
+            {/* Right side: System Tray */}
+            <div className="flex items-center h-12 pr-2">
+                <div className="flex items-center space-x-1 h-full">
+                    <div className="hidden sm:flex items-center space-x-1 h-full">
+                        <button className="p-2 rounded hover:bg-zinc-800 w-10 h-10 flex items-center justify-center">
+                            <img src={wifi} alt="WiFi" className="w-5 h-5" />
                         </button>
-                    );
-                })}
+                        <button className="p-2 rounded hover:bg-zinc-800 w-10 h-10 flex items-center justify-center">
+                            <img src={battery} alt="Battery" className="w-5 h-5" />
+                        </button>
+                        <button className="p-2 rounded hover:bg-zinc-800 w-10 h-10 flex items-center justify-center">
+                            <img src={volumeMute} alt="Volume" className="w-5 h-5" />
+                        </button>
+                    </div>
+                    <div className="h-8 w-px bg-zinc-600 mx-1"></div>
+                    <div className="text-sm px-3 h-9 flex items-center bg-zinc-800/50 rounded hover:bg-zinc-700/70">
+                        {time.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                    </div>
+                </div>
             </div>
 
-            {/* Right side: System Tray (WiFi, Battery, Volume, Clock) */}
-            <div className="flex items-center gap-3 mr-4">
-                <img src={wifi} alt="WiFi" className="w-9 h-9 hover:bg-zinc-800 p-2 rounded" />
-                <img src={battery} alt="Battery" className="w-10 h-10 hover:bg-zinc-800 p-2 rounded" />
-                <img src={volumeMute} alt="Volume" className="w-9 h-9 hover:bg-zinc-800 p-2 rounded" />
-                <span className="hover:bg-zinc-800 p-2 rounded">{time.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>
-            </div>
+            <style>{`
+                .hide-scrollbar {
+                    -ms-overflow-style: none;
+                    scrollbar-width: none;
+                }
+                .hide-scrollbar::-webkit-scrollbar {
+                    display: none;
+                }
+            `}</style>
         </div>
     );
 };
