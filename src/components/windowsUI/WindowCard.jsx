@@ -137,50 +137,67 @@ const WindowCard = forwardRef(({
                 }}
             >
                 <div className="flex flex-col h-full">
-                    {/* Window Title Bar */}
+                    {/* Windows 10 Style Title Bar */}
                     <div 
-                        className="drag-handle flex justify-between items-center bg-gray-800/90 text-white p-2 cursor-default"
+                        className="drag-handle flex items-center justify-between h-9 px-0 cursor-default select-none bg-zinc-900/95 backdrop-blur-sm"
+                        style={{
+                            borderTopLeftRadius: isMaximized ? '0' : '0.5rem',
+                            borderTopRightRadius: isMaximized ? '0' : '0.5rem',
+                            borderBottom: '1px solid rgba(63, 63, 70, 0.5)'
+                        }}
                         onMouseDown={onClick}
                     >
-                        <span className="ml-2 font-medium text-sm truncate flex-1">{title}</span>
-                        <div className="flex space-x-2">
+                        {/* Left side with icon and title */}
+                        <div className="flex items-center h-full pl-3 pr-2">
+                            <span className="text-gray-200 text-sm font-normal">{title}</span>
+                        </div>
+
+                        {/* Window controls */}
+                        <div className="flex items-stretch h-full">
                             <button 
                                 onClick={handleMinimize}
-                                className="window-control p-1 rounded hover:bg-gray-600/50 flex items-center justify-center w-6 h-6"
+                                className="window-control w-12 h-full flex items-center justify-center hover:bg-[#404040] transition-colors duration-100 group"
                                 aria-label="Minimize"
                             >
-                                <svg className="w-3 h-3" viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M5 10H15" stroke="currentColor" strokeWidth="2" />
-                                </svg>
+                                <div className="w-4 h-4 flex items-center justify-center">
+                                    <div className="w-2.5 h-px bg-gray-300 group-hover:bg-white" />
+                                </div>
                             </button>
+                            
                             <button 
                                 onClick={handleMaximize}
-                                className="window-control p-1 rounded hover:bg-gray-600/50 flex items-center justify-center w-6 h-6"
+                                className="window-control w-12 h-full flex items-center justify-center hover:bg-[#404040] transition-colors duration-100 group"
                                 aria-label={isMaximized ? "Restore" : "Maximize"}
                             >
-                                <svg className="w-3 h-3" viewBox="0 0 20 20" fill="currentColor">
+                                <div className="w-4 h-4 flex items-center justify-center">
                                     {isMaximized ? (
-                                        <path d="M8 3v3a2 2 0 0 1-2 2H3m13 0V5a2 2 0 0 0-2-2h-3m0 13h3a2 2 0 0 0 2-2v-3M3 12v3a2 2 0 0 0 2 2h3" stroke="currentColor" strokeWidth="2" />
+                                        <div className="relative w-3 h-3">
+                                            <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-gray-300 group-hover:border-white" />
+                                            <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-gray-300 group-hover:border-white" />
+                                            <div className="absolute top-0.5 left-0.5 w-2 h-2 border-t border-l border-gray-300 group-hover:border-white" />
+                                        </div>
                                     ) : (
-                                        <path d="M5 5H15V15H5V5Z" stroke="currentColor" strokeWidth="2" />
+                                        <div className="w-2.5 h-2.5 border border-gray-300 group-hover:border-white" />
                                     )}
-                                </svg>
+                                </div>
                             </button>
+                            
                             <button 
                                 onClick={onClose}
-                                className="window-control p-1 rounded hover:bg-red-500/80 flex items-center justify-center w-6 h-6"
+                                className="window-control w-12 h-full flex items-center justify-center hover:bg-red-600 transition-colors duration-100 group"
                                 aria-label="Close"
                             >
-                                <svg className="w-3 h-3" viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M6 6L14 14M6 14L14 6" stroke="currentColor" strokeWidth="2" />
-                                </svg>
+                                <div className="w-4 h-4 relative">
+                                    <div className="absolute top-1/2 left-1/2 w-2.5 h-px bg-gray-300 group-hover:bg-white transform -translate-x-1/2 -translate-y-1/2 rotate-45" />
+                                    <div className="absolute top-1/2 left-1/2 w-2.5 h-px bg-gray-300 group-hover:bg-white transform -translate-x-1/2 -translate-y-1/2 -rotate-45" />
+                                </div>
                             </button>
                         </div>
                     </div>
 
                     {/* Window Content */}
                     <div 
-                        className="flex-1 overflow-auto p-4 text-gray-700"
+                        className="flex-1 overflow-auto text-gray-700"
                         style={{
                             WebkitOverflowScrolling: 'touch',
                             overscrollBehavior: 'contain',

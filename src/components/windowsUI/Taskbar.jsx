@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import windowsIcon from "/assets/taskbar/windows-icon.png";
 import volumeMute from "/assets/taskbar/volume-mute.png";
 import wifi from "/assets/taskbar/wifi.png";
 import battery from "/assets/taskbar/battery.png";
+import StartMenu from "./StartMenu";
 
 const Taskbar = ({ 
     openWindows, 
@@ -10,14 +11,21 @@ const Taskbar = ({
     setActiveWindow, 
     desktopIcons,
     windowVisibility = {},
-    onToggleMinimize 
+    onToggleMinimize,
+    onOpenApp
 }) => {
     const [time, setTime] = useState(new Date());
+    const [showStartMenu, setShowStartMenu] = useState(false);
+    const startButtonRef = useRef(null);
 
     useEffect(() => {
+        // Update immediately to avoid initial delay
+        setTime(new Date());
+        
+        // Then update every second
         const timer = setInterval(() => {
             setTime(new Date());
-        }, 60000); // Update every minute
+        }, 1000);
 
         return () => clearInterval(timer);
     }, []);
@@ -37,14 +45,30 @@ const Taskbar = ({
     };
 
     return (
-        <div className="fixed bottom-0 left-0 w-full bg-zinc-900/95 backdrop-blur-sm text-white p-1.5 flex justify-between items-center border-t border-zinc-700 z-50 overflow-hidden">
+        <div className="fixed bottom-0 left-0 w-full bg-zinc-900/95 backdrop-blur-sm text-white p-1.5 flex justify-between items-center border-t border-zinc-700 z-[9998] overflow-hidden">
             {/* Left side: Windows button + Opened Apps */}
             <div className="flex-1 flex items-center h-12">
-                <div className="flex items-center h-full pl-2 pr-1">
-                    <button className="p-2 rounded hover:bg-zinc-800 w-10 h-10 flex-shrink-0 flex items-center justify-center">
+                <div className="flex items-center h-full pl-2 pr-1 relative" style={{ zIndex: 10000 }}>
+                    <button 
+                        ref={startButtonRef}
+                        data-start-button
+                        className={`p-2 rounded w-10 h-10 flex-shrink-0 flex items-center justify-center transition-colors ${
+                            showStartMenu ? 'bg-zinc-600/50' : 'hover:bg-zinc-700/50'
+                        }`}
+                        onClick={() => setShowStartMenu(!showStartMenu)}
+                    >
                         <img src={windowsIcon} alt="Windows icon" className="w-6 h-6" />
                     </button>
+                    {showStartMenu && (
+                        <StartMenu
+                            isOpen={showStartMenu}
+                            onClose={() => setShowStartMenu(false)}
+                            desktopIcons={desktopIcons}
+                            onAppClick={onOpenApp}
+                        />
+                    )}
                 </div>
+                <div className="h-8 w-px bg-zinc-600 mx-1 mr-2"></div>
 
                 {/* App Icons */}
                 <div className="flex-1 flex items-center h-full overflow-x-auto hide-scrollbar px-1">
@@ -90,7 +114,7 @@ const Taskbar = ({
                         </button>
                     </div>
                     <div className="h-8 w-px bg-zinc-600 mx-1"></div>
-                    <div className="text-sm px-3 h-9 flex items-center bg-zinc-800/50 rounded hover:bg-zinc-700/70">
+                    <div className="text-sm px-3 h-9 flex items-center bg-zinc-800/50 rounded hover:bg-zinc-700/70 ml-5">
                         {time.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                     </div>
                 </div>

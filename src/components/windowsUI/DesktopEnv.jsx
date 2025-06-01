@@ -6,6 +6,7 @@ import projectIcon from "/assets/icons/project.png";
 import skillsIcon from "/assets/icons/skills.png";
 import aboutMeIcon from "/assets/icons/info.png";
 import portfolioIcon from "/assets/icons/exe.png";
+import terminalIcon from "/assets/icons/terminal.png";
 import certificateIcon from "/assets/icons/certificate.png";
 import blogsIcon from "/assets/icons/blogs.png";
 import resumeIcon from "/assets/icons/resume.png";
@@ -16,6 +17,7 @@ import Certificates from "../../pages/windowsUI/Certificates.jsx";
 import Blogs from "../../pages/windowsUI/Blogs.jsx";
 import Resume from "../../pages/windowsUI/Resume.jsx";
 import PortfolioLoader from "./PortfolioLoader.jsx";
+import Terminal from "./Terminal.jsx";
 
 const DesktopEnv = () => {
     const [openWindows, setOpenWindows] = useState([]);
@@ -31,6 +33,15 @@ const DesktopEnv = () => {
         "Certificates": <Certificates />,
         "Blogs": <Blogs />,
         "Resume": <Resume />,
+        "Terminal": (
+            <Terminal 
+                onCommand={(cmd) => {
+                    if (cmd === 'clear') return [];
+                    return [`$ ${cmd}`, `Command not found: ${cmd}`];
+                }}
+                onExit={() => closeFolder("Terminal")}
+            />
+        ),
         "portfolio.exe": <PortfolioLoader />, // ✅ Portfolio window shows a terminal-style loader
     };
 
@@ -92,11 +103,23 @@ const DesktopEnv = () => {
         { name: "Resume", icon: resumeIcon },
         { name: "portfolio.exe", icon: portfolioIcon },
     ];
+    
+    // Apps that should appear in the Start Menu but not on desktop
+    const startMenuApps = [
+        ...desktopIcons,
+        { name: "Terminal", icon: terminalIcon }
+    ];
 
     return (
         <div className="relative w-full h-screen overflow-hidden bg-cover bg-center"
             style={{
                 backgroundImage: `url(${wallpaper})`,
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                zIndex: 0
             }}
         >
             {/* Desktop Icons - Higher z-index to stay above windows */}
@@ -157,9 +180,10 @@ const DesktopEnv = () => {
                 openWindows={openWindows}
                 activeWindow={activeWindow}
                 setActiveWindow={setActiveWindow}
-                desktopIcons={desktopIcons}
+                desktopIcons={startMenuApps}
                 windowVisibility={windowVisibility}
                 onToggleMinimize={toggleMinimizeWindow}
+                onOpenApp={openFolder}
             />
         </div>
     );
