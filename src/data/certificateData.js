@@ -33,7 +33,28 @@ const certificateData = [
         date: "July 2024",
         image: "/assets/certificates/Google Cloud Computing Fundamentals.png",
         link: "https://www.credly.com/badges/11e64a5e-63e7-42f5-874e-90c7fd146c4f/public_url",
-    }
+    },
+    {
+        title: "TechA Linux Programming Foundation Certification",
+        organization: "Infosys Springboard",
+        date: "May 2025",
+        image: "/assets/certificates/TechA Linux Programming Foundation Certification.png",
+        link: "https://verify.onwingspan.com/",
+    },
+    {
+        title: "Learn JavaScript",
+        organization: "SCRIMBA",
+        date: "May 2025",
+        image: "/assets/certificates/Learn JavaScript.png",
+        link: "https://coursera.org/verify/INAN71O1SSR5",
+    },
+    {
+        title: "Hardware Description Languages for FPGA Design",
+        organization: "University of Colorado Boulder",
+        date: "April 2025",
+        image: "/assets/certificates/Hardware Description Languages for FPGA Design.png",
+        link: "https://coursera.org/verify/K35LGN73VGBX",
+    },
 ];
 
 export default certificateData;
