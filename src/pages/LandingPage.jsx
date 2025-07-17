@@ -329,16 +329,31 @@ import * as THREE from "three";
 import { useNavigate } from "react-router-dom";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 
-// Loader Overlay with percentage
+// Loader Overlay with percentage and skip option
 const LoaderOverlay = () => {
     const { progress } = useProgress();
+    const navigate = useNavigate();
+
+    const handleSkip = () => {
+        navigate('/boot');
+    };
+
     return (
         <Html center>
-            <div className="fixed inset-0 flex items-center justify-center bg-zinc-900 z-50">
+            <div className="fixed inset-0 flex flex-col items-center justify-center bg-zinc-900 z-50">
                 <div className="text-center text-white">
                     <p className="text-xl font-semibold mb-2">Loading 3D Environment...</p>
                     <p className="text-lg">{Math.floor(progress)}%</p>
                     <progress className="progress w-56 mt-2" value={progress} max="100" />
+                    <div className="mt-8 text-md text-gray-400">
+                        Taking too long?
+                    </div>
+                    <button
+                        onClick={handleSkip}
+                        className="mt-2 px-6 py-2 text-lg font-small text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors cursor-pointer touch-action-manipulation active:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                    >
+                        Skip to classic boot
+                    </button>
                 </div>
             </div>
         </Html>
