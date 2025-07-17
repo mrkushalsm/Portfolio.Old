@@ -74,7 +74,7 @@ const EducationTimeline = () => {
                                     style={{ position: 'relative', zIndex: 2 }}
                                 >
                                     <span className={`block w-3 h-3 rounded-full transition-all duration-300
-                                        ${currentIndex === index ? 'bg-black' : 'bg-white'}
+                                        ${currentIndex === index ? 'bg-white' : 'bg-black'}
                                     `}></span>
                                 </button>
                                 <span className="mt-2 text-xs font-medium text-white text-center w-20 truncate">{item.title}</span>

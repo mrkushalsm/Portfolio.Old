@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import "animate.css";
 import HeroAnimation from "../../components/portfolio/HeroAnimation.jsx";
 import AboutMe from "../portfolio/AboutMe.jsx";
+import AboutMeMobile from "../portfolio/AboutMeMobile.jsx";
 import Skills from "../portfolio/Skills.jsx";
 import SkillsCarousel from "../portfolio/SkillsCarousel.jsx";
 import Projects from "../portfolio/Projects.jsx";
@@ -62,12 +63,57 @@ const SkillsSection = () => {
     );
 };
 
+// AboutMe wrapper component to handle responsive rendering
+const AboutMeSection = () => {
+    // Initialize based on mobile view (<640px)
+    const [isMobile, setIsMobile] = useState(() => {
+        return window.matchMedia("(max-width: 639px)").matches;
+    });
+
+    // Update state on window resize
+    useEffect(() => {
+        const mediaQuery = window.matchMedia("(max-width: 639px)");
+        const handleResize = () => {
+            setIsMobile(mediaQuery.matches);
+        };
+
+        mediaQuery.addEventListener("change", handleResize);
+        return () => mediaQuery.removeEventListener("change", handleResize);
+    }, []);
+
+    return (
+        <AnimatePresence mode="wait">
+            {isMobile ? (
+                <motion.div
+                    key="mobile"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5 }}
+                >
+                    <AboutMeMobile />
+                </motion.div>
+            ) : (
+                <motion.div
+                    key="desktop"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5 }}
+                >
+                    <AboutMe />
+                </motion.div>
+            )}
+        </AnimatePresence>
+    );
+};
+
 const Portfolio = () => {
     const sectionsRef = useRef([]);
     const [isSidebarVisible, setSidebarVisible] = useState(false);
 
     const sectionsData = [
-        { id: "AboutMe", title: "About Me", content: <AboutMe />, direction: null },
+        { id: "AboutMe", title: "About Me", content: <AboutMeSection />, direction: null },
         {
             id: "Skills",
             title: "Skills",

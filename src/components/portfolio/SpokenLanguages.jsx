@@ -60,7 +60,7 @@ const SpokenLanguages = () => {
   };
 
   // Typewriter logic
-  const heading = selected === null ? "Languages I know" : LANGUAGES[selected]?.translatedTitle;
+  const heading = selected === null ? "Choose a language" : LANGUAGES[selected]?.translatedTitle;
   const typewriterText = useTypewriter(heading, 50, typewriterKey + heading);
 
   // When selected changes, reset typewriter
