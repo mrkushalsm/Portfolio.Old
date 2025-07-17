@@ -1,35 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ProjectCard from "../../components/portfolio/ProjectCard";
-import weatherApp from "/assets/projectImg/weatherapp.png";
-import portfolioWebsite from "/assets/projectImg/portfoliowebsite.png";
-
-const projects = [
-    {
-        name: "Weather App",
-        description: "Real-time weather updates with OpenWeather API.",
-        image: weatherApp,
-        link: "https://weather-app-teal-omega.vercel.app/",
-    },
-    {
-        name: "Portfolio Website",
-        description: "A personal portfolio styled like a Windows desktop.",
-        image: portfolioWebsite,
-        link: "",
-    },
-    {
-        name: "Task Manager",
-        description: "Drag-and-drop task management with ease.",
-        image: "https://source.unsplash.com/500x300/?task,management",
-        link: "",
-    },
-    {
-        name: "E-Commerce Platform",
-        description: "A full-stack online shopping experience.",
-        image: "https://source.unsplash.com/500x300/?ecommerce",
-        link: "",
-    },
-];
+import { projects } from "../../data/projectsData";
 
 const Projects = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -66,8 +38,8 @@ const Projects = () => {
                     ❮
                 </button>
 
-                {/* Project Card with responsive height */}
-                <div className="w-full h-[350px] sm:h-[400px] md:h-[450px] lg:h-[500px] flex justify-center items-center overflow-hidden">
+                {/* Project Card with responsive height - Auto height to fit content */}
+                <div className="w-full min-h-[400px] sm:min-h-[450px] md:min-h-[500px] lg:min-h-[600px] xl:min-h-[700px] flex justify-center items-start overflow-visible">
                     <AnimatePresence mode="wait">
                         <motion.div
                             key={currentIndex}

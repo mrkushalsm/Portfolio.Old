@@ -88,6 +88,8 @@
 // export default Terminal;
 
 import React, { useState, useEffect, useRef } from "react";
+import { projects } from "../../data/projectsData";
+import { skillsData } from "../../data/skillsData";
 
 // ASCII Art for neofetch
 const ASCII_ART = `
@@ -98,7 +100,6 @@ const ASCII_ART = `
  | |    | | | |  __/ | \\__ \\ |_| | (_) | | | | | | (_| |
  |_|    |_| |_|\\___|_|_|___/\\__|_|\\___/|_|_| |_|_|\\__,_|
 `;
-
 
 // Help text
 const HELP_TEXT = `
@@ -143,17 +144,14 @@ Utility:
   echo [text] - Repeat back the input text
 `;
 
-// Sample data
-const PROJECTS = [
-    { name: 'portfolio', description: 'My personal portfolio website' },
-    { name: 'project-x', description: 'A secret project' },
-    { name: 'blog', description: 'My technical blog' },
-];
+// Convert projects data to terminal format
+const PROJECTS = projects.map(project => ({
+    name: project.name.toLowerCase().replace(/\s+/g, '-'),
+    description: project.description
+}));
 
-const SKILLS = [
-    'JavaScript (ES6+)', 'React', 'Node.js', 'Python',
-    'HTML/CSS', 'Git', 'Docker', 'AWS', 'SQL/NoSQL'
-];
+// Convert skills data to flat array for terminal display
+const SKILLS = Object.values(skillsData).flat().map(skill => skill.name);
 
 const FORTUNES = [
     "The only way to do great work is to love what you do.",
@@ -246,7 +244,23 @@ const Terminal = ({ onCommand, initialLogs = [], prompt = "$", showInput = true,
                 break; }
 
             case 'ls':
-                addOutput(PROJECTS.map(p => p.name).join('  '));
+                if (currentDir === '~') {
+                    // In root directory, show all project names
+                    addOutput(PROJECTS.map(p => p.name).join('  '));
+                } else {
+                    // In a project directory, show project details
+                    const projectName = currentDir.replace('~/', '');
+                    const project = projects.find(p => p.name.toLowerCase().replace(/\s+/g, '-') === projectName);
+                    if (project) {
+                        addOutput(`Project Details for ${project.name}:`);
+                        addOutput(`Name: ${project.name}`);
+                        addOutput(`Description: ${project.description}`);
+                        addOutput(`Live Demo: ${project.link || 'Not available'}`);
+                        addOutput(`GitHub: ${project.github || 'Not available'}`);
+                    } else {
+                        addOutput('Project not found', 'error');
+                    }
+                }
                 break;
 
             case 'cd':
@@ -371,15 +385,15 @@ const Terminal = ({ onCommand, initialLogs = [], prompt = "$", showInput = true,
                 </div>
             ))}
             {showInput && (
-                <div className="flex items-center">
-                    <span className="text-green-400">{currentDir}</span>
-                    <span className="text-green-400">{prompt}</span>
+                <div className="flex items-center flex-nowrap">
+                    <span className="text-green-400 whitespace-nowrap">{currentDir}</span>
+                    <span className="text-green-400 whitespace-nowrap">{prompt}</span>
                     <input
                         type="text"
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         onKeyDown={handleKeyDown}
-                        className="terminal-input bg-transparent border-none outline-none ml-1.5 text-green-400 w-full relative"
+                        className="terminal-input bg-transparent border-none outline-none ml-1.5 text-green-400 w-full relative min-w-0 flex-1"
                         autoFocus
                         spellCheck="false"
                     />

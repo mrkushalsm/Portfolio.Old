@@ -47,7 +47,7 @@ const ProfileCard = () => {
                         {/* Base Image (profile-bw.jpg) */}
                         {isDesktop && (
                             <img
-                                src="/assets/profile-bw.jpg"
+                                src="/assets/profile.jpeg"
                                 alt="Profile Default"
                                 className={`absolute rounded-full border-4 border-zinc-300 transition-opacity duration-500 w-53 h-70
                                     ${isHovered ? "opacity-0" : "opacity-100"}

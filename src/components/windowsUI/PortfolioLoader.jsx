@@ -102,7 +102,7 @@ const PortfolioLoader = () => {
         
         // Update progress
         const newProgress = Math.min(100, ((index + 1) / loadingMessages.length) * 100);
-        setProgress(newProgress);
+        setProgress(parseFloat(newProgress.toFixed(2)));
         
         // Add a small delay before next command
         await new Promise(resolve => setTimeout(resolve, 300));
@@ -149,14 +149,14 @@ const PortfolioLoader = () => {
 
     return (
         <div 
-            className="h-screen w-full bg-black text-green-400 font-mono p-4 sm:p-8 flex flex-col"
+            className="h-screen w-full bg-black text-green-400 font-mono relative"
             style={{
                 background: 'rgba(0, 0, 0, 0.95)',
                 backgroundImage: 'linear-gradient(rgba(0, 255, 0, 0.03) 1px, transparent 1px)',
                 backgroundSize: '100% 24px',
             }}
         >
-            <div className="flex-1 overflow-y-auto" ref={containerRef}>
+            <div className="h-full p-4 sm:p-8 pb-20 overflow-y-auto" ref={containerRef}>
                 <div className="min-h-full flex flex-col">
                     <div className="mb-4">
                         {lines.map((line, index) => (
@@ -173,7 +173,9 @@ const PortfolioLoader = () => {
                     <div className="flex-1" />
                 </div>
             </div>
-            <div className="mt-4">
+
+            {/* Fixed progress bar at bottom */}
+            <div className="fixed bottom-0 left-0 right-0 p-4 sm:p-8 bg-black bg-opacity-95">
                 <div className="h-1 w-full bg-gray-800 rounded overflow-hidden">
                     <div 
                         className="h-full bg-green-500 transition-all duration-300"
