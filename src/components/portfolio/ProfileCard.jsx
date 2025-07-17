@@ -1,6 +1,22 @@
 import React, { useState, useEffect } from "react";
 
-const ProfileCard = () => {
+const ProfileCard = ({
+    title,
+    subtitle,
+    defaultImage,
+    hoverImage,
+    backgroundImage = "/assets/profilecardhover.png",
+    width,
+    height,
+    mdWidth,
+    mdHeight,
+    defaultImgWidth = "w-46",
+    defaultImgHeight = "h-60",
+    hoverImgWidth = "w-60",
+    hoverImgHeight = "h-80",
+    showBorder = true,
+    showRounded = true
+}) => {
     const [isHovered, setIsHovered] = useState(false);
     const [isDesktop, setIsDesktop] = useState(true);
 
@@ -18,7 +34,15 @@ const ProfileCard = () => {
     return (
         <div className="text-center animate__animated animate__fadeInLeft justify-center">
             <div
-                className="relative w-[250px] h-[350px] md:w-[300px] md:h-[400px] flex justify-center items-end perspective-3d group select-none"
+                className="relative flex justify-center items-end perspective-3d group select-none"
+                style={{
+                    width: width,
+                    height: height,
+                    '@media (min-width: 768px)': {
+                        width: mdWidth,
+                        height: mdHeight
+                    }
+                }}
                 onMouseEnter={() => isDesktop && setIsHovered(true)}
                 onMouseLeave={() => isDesktop && setIsHovered(false)}
             >
@@ -27,7 +51,7 @@ const ProfileCard = () => {
                     ${isHovered ? "rotate-x-[25deg] -translate-y-2 shadow-2xl" : ""}
                 `}>
                     <img
-                        src="/assets/profilecardhover.png"
+                        src={backgroundImage}
                         alt="Background"
                         className="w-full h-full object-cover"
                     />
@@ -37,30 +61,30 @@ const ProfileCard = () => {
                 <div className={`absolute bottom-3 w-[80%] transition-transform duration-500
                     ${isHovered ? "-translate-y-[30px] scale-110" : ""}
                 `}>
-                    <h3 className="text-3xl font-semibold mt-4">Kushal SM</h3>
-                    <p className="text-base text-gray-400">Full Stack Developer</p>
+                    <h3 className="text-xl md:text-3xl font-semibold mt-4">{title}</h3>
+                    <p className="text-sm md:text-base text-gray-400">{subtitle}</p>
                 </div>
 
                 {/* Crossfade Images */}
-                <div className={`absolute bottom-25 w-full transition-all duration-500 ${isHovered ? "-translate-y-[30px]" : ""}`}>
+                <div className={`absolute bottom-23 w-full transition-all duration-500 ${isHovered ? "-translate-y-[30px]" : ""}`}>
                     <div className="relative w-full h-full flex justify-center items-center">
-                        {/* Base Image (profile-bw.jpg) */}
+                        {/* Base Image (default image) */}
                         {isDesktop && (
                             <img
-                                src="/assets/profile.jpeg"
-                                alt="Profile Default"
-                                className={`absolute rounded-full border-4 border-zinc-300 transition-opacity duration-500 w-53 h-70
+                                src={defaultImage}
+                                alt="Default"
+                                className={`absolute ${showRounded ? "rounded-full" : ""} ${showBorder ? "border-4 border-zinc-300" : ""} transition-opacity duration-500 ${defaultImgWidth} ${defaultImgHeight}
                                     ${isHovered ? "opacity-0" : "opacity-100"}
                                 `}
                             />
                         )}
 
-                        {/* Hover/Primary Image (profile.jpeg) */}
+                        {/* Hover/Primary Image */}
                         <img
-                            src="/assets/profile.jpeg"
-                            alt="Profile"
-                            className={`rounded-full border-4 border-zinc-300 transition-all duration-500 
-                                ${isHovered ? "w-60 h-80 -translate-y-[30px]" : "w-53 h-70"}
+                            src={hoverImage}
+                            alt="Primary"
+                            className={`${showRounded ? "rounded-full" : ""} ${showBorder ? "border-4 border-zinc-300" : ""} transition-all duration-500 
+                                ${isHovered ? `${hoverImgWidth} ${hoverImgHeight} -translate-y-[30px]` : `${defaultImgWidth} ${defaultImgHeight}`}
                                 ${isDesktop ? (isHovered ? "opacity-100" : "opacity-0") : "opacity-100"}
                             `}
                         />
